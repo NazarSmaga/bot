@@ -1,0 +1,243 @@
+
+#Назар [27.10.2022 22:13]
+import audioop
+from email.mime import audio
+from importlib.resources import open_text
+import logging
+from telegram import Update, ChatAction
+from telegram.ext import CallbackContext, CommandHandler, Updater, MessageHandler, Filters
+import uuid
+
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+)
+
+state = 1
+life = 5
+
+updater = Updater(token="5667378008:AAF6SWa6tY7J_Mnkhr7YfLwJ52j3lbmklYI", use_context=True)
+dispatcher = updater.dispatcher
+
+def start_command_handler(update: Update, context: CallbackContext):
+    global state
+    if state == 1:
+        context.bot.send_message(chat_id=update.effective_chat.id,  text=f"Привіт, {update.effective_chat.first_name}!") 
+        text = 'вітаю в грі "Вгадай що за пісня". Памятайте в вас всього 6 житів. Ну що ж розпочнемо'
+        context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+        with open('Ivan_Navi_Наодинці.mp3.mp3', 'rb') as file:
+            context.bot.send_chat_action(update.effective_chat.id, ChatAction.UPLOAD_AUDIO)
+            context.bot.send_audio(update.effective_chat.id, audio=file)
+        text_1 = '''
+1: Стефанія
+2: Наодинці
+3: Воля
+'''
+        context.bot.send_message(chat_id=update.effective_chat.id, text=text_1)
+        state += 1
+    else:
+        pass
+
+def text_message_handler(update: Update, context: CallbackContext):
+    message = update.message.text
+    global state
+    global life
+    if state == 2 and life > 0:
+        if message == '3':
+            text = '''
+1: Воїн
+2: In_The_Shadows_Of_Ukraine
+3: Герб           
+'''
+            context.bot.send_message(chat_id=update.effective_chat.id, text="Вітаю правильний вибір. Вгадай що за пісня")
+            with open('KALUSH_feat_The Rasmus_In_The_Shadows_Of_Ukraine.mp3.mp3', 'rb') as file:
+                context.bot.send_chat_action(update.effective_chat.id, ChatAction.UPLOAD_AUDIO)
+                context.bot.send_audio(update.effective_chat.id, audio=file)
+            context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+            state += 1
+        elif message == '1' or message == '2':
+            text = "Неправильно. Подумайте ще"
+            context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+            life -= 1
+    elif state == 3 and life > 0:
+        if message == '2':
+            text = '''
+1: Річка
+2: Чекаю_На_Тебе
+3: Чому така сумна
+'''
+            context.bot.send_message(chat_id=update.effective_chat.id, text="Вітаю правильний вибір. Вгадай що за пісня")
+            with open('Yevae_Чекаю_На_Тебе.mp3.mp3', 'rb') as file:
+                context.bot.send_chat_action(update.effective_chat.id, ChatAction.UPLOAD_AUDIO)
+                context.bot.send_audio(update.effective_chat.id, audio=file)
+            context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+            state += 1
+        elif message == '1' or message == '3':
+            text = "Неправильно. Подумайте ще"
+            context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+            life -= 1
+    elif state == 4 and life > 0:
+        if message == '2':
+            text = '''
+1: Танцюю сам
+2: Стефанія
+3: Перемога
+'''
+            context.bot.send_message(chat_id=update.effective_chat.id, text="Вітаю правильний вибір. Вгадай що за пісня")
+            with open('ІЯ_Перемога.mp3.mp3.', 'rb') as file:
+                context.bot.send_chat_action(update.effective_chat.id, ChatAction.UPLOAD_AUDIO)
+                context.bot.send_audio(update.effective_chat.id, audio=file)
+            context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+            state += 1
+
+#Назар, [27.10.2022 22:13]
+        elif message == '1' or message == '3':
+            text = "Неправильно. Подумайте ще"
+        context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+        life -= 1
+    elif state == 5 and life > 0:
+        if message == '1':
+            text = '''
+1: Люди У Таксі
+2: Дунай
+3: Цьом
+'''
+            context.bot.send_message(chat_id=update.effective_chat.id, text="Вітаю правильний вибір. Вгадай що за пісня")
+            with open('Anna Maria_Люди_У_Таксі.mp3.mp3', 'rb') as file:
+                context.bot.send_chat_action(update.effective_chat.id, ChatAction.UPLOAD_AUDIO)
+                context.bot.send_audio(update.effective_chat.id, audio=file)
+            context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+            state += 1
+    elif message == '2' or message == '3':
+            text = "Неправильно. Подумайте ще"
+            context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+            life -= 1
+    elif state == 6 and life > 0:
+        if message == '1':
+            text = '''
+1: Зачаравона
+2: Я_Живий
+3: Красива
+'''
+            context.bot.send_message(chat_id=update.effective_chat.id, text="Вітаю правильний вибір. Вгадай що за пісня")
+            with open('Ірина_Федишин_Я_Живий.mp3.mp3', 'rb') as file:
+                context.bot.send_chat_action(update.effective_chat.id, ChatAction.UPLOAD_AUDIO)
+                context.bot.send_audio(update.effective_chat.id, audio=file)
+            context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+            state += 1
+        elif message == '2' or message == '3':
+            text = "Неправильно. Подумайте ще"
+            context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+            life -= 1
+    elif state == 7 and life > 0:
+        if message == '2':
+            text = '''
+1: Річка
+2: Чарівниця
+3: Під_Три_Чорти
+'''
+            context.bot.send_message(chat_id=update.effective_chat.id, text="Вітаю правильний вибір. Вгадай що за пісня")
+            with open('Yarima_Під_Три_Чорти.mp3.mp3', 'rb') as file:
+                context.bot.send_chat_action(update.effective_chat.id, ChatAction.UPLOAD_AUDIO)
+                context.bot.send_photo(update.effective_chat.id, audio=file)
+            context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+            state += 1
+        elif message == '1' or message == '3':
+            text = "Неправильно. Подумайте ще"
+            context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+            life -= 1
+    elif state == 8 and life > 0:
+        if message == '3':
+            text = '''
+1: Додому
+2: Побарабану
+3: Під_Шафе
+'''
+            context.bot.send_message(chat_id=update.effective_chat.id, text="Вітаю правильний вибір. Вгадай що за пісня")
+            with open('Santorin_Під_Шафе.mp3.mp3', 'rb') as file:
+                context.bot.send_chat_action(update.effective_chat.id, ChatAction.UPLOAD_PHOTO)
+                context.bot.send_photo(update.effective_chat.id, photo=file)
+            context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+            state += 1
+        elif message == '1' or message == '2':
+            text = "Неправильно. Подумайте ще"
+            context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+            life -= 1
+    elif state == 9 and life > 0:
+        if message == '2':
+            text = '''
+1: Наодинці
+2: Seniorita
+3: На мості
+'''
+            context.bot.send_message(chat_id=update.effective_chat.id, text="Вітаю правильний вибір. Вгадай що за пісня")
+            with open('Vlada_K_Seniorita.mp3.mp3', 'rb') as file:
+                context.bot.send_chat_action(update.effective_chat.id, ChatAction.UPLOAD_AUDIO)
+                context.bot.send_audio(update.effective_chat.id, audio=file)
+            context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+            state += 1
+        elif message == '1' or message == '3':
+            text = "Неправильно. Подумайте ще"
+
+#Назар, [27.10.2022 21:29]
+            context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+            life -= 1
+    elif state == 10 and life > 0:
+        if message == '1':
+
+
+           text = '''
+1: Під_три_чорти
+2: Побарабану
+3: Стефанія
+'''
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Вітаю правильний вибір. Вгадай що за пісня")
+        with open('Під_три_чорти.mp3.mp3, rd') as file:
+            context.bot.send_chat_action(update.effective_chat.id, ChatAction.UPLOAD_AUDIO)
+            context.bot.send_audio(update.effective_chat.id, audio=file)
+        context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+        state += 1
+    elif message == '2' or message == '3':
+        text = "Неправильно. Подумайте ще"
+        context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+        life -= 1
+    elif state == 11 and life > 0:
+        if message == '1':
+            text = '''
+1: Біля_Тополі
+2: Річка
+3: Танцюю сам
+'''
+            context.bot.send_message(chat_id=update.effective_chat.id, text="Вітаю правильний вибір. Вгадай що за пісня")
+            with open('Yaktak_Біля_Тополі.mp3.mp3', 'rb') as file:
+                context.bot.send_chat_action(update.effective_chat.id, ChatAction.UPLOAD_AUDIO)
+                context.bot.send_audio(update.effective_chat.id, audio=file)
+            context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+            state += 1
+        elif message == '2' or message == '3':
+            text = "Неправильно. Подумайте ще"
+            context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+            life -= 1
+    elif state == 12 and life > 0:
+        if message == '1':
+            context.bot.send_message(chat_id=update.effective_chat.id, text="Вітаю правильний вибір .Гру завершено якщо хочете зіграти щераз пропишіть /start")
+            state = 1
+        elif message == '2' or message == '3':
+            text = "Неправильно. Подумайте ще"
+            context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+            life -= 1
+    elif life == 0:
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Ви програли. Щоб спробувати ще раз напишіть /start")
+        state = 1
+        life = 5
+    else:
+        pass
+
+start_handler = CommandHandler('start', start_command_handler)
+dispatcher.add_handler(start_handler)
+
+echo_handler = MessageHandler(Filters.text & ~Filters.command, text_message_handler)
+dispatcher.add_handler(echo_handler)
+
+# Start bot
+updater.start_polling()
